@@ -24,7 +24,7 @@ class App {
     constructor() {
         this.empleados = [];
         //this.crearEmpleados(5);
-        this.leerSueldo();
+        //this.leerSueldo();
 
         window.onload = this.iniciar.bind(this);
     }
@@ -33,44 +33,39 @@ class App {
 
         let nombres = undefined;
         let sueldos = 0;
+        let contadorSueldosBasicos = 0;
+        let contadorSueldosAltos = 0;
+        
 
         let i = 0;
         do {
             nombres = prompt("Nombre empleado: ");
-            sueldos = prompt("Sueldo: ");
+            do {
+                sueldos = prompt("Sueldo: ");
+            } while(!(sueldos > 0) || !(sueldos >= 100));
+
+            //nombres = "Test"+Math.floor(Math.random()*20);
+            //sueldos = Math.floor(Math.random()*400)+100;
 
             this.addEmpleado(nombres,sueldos);
             i++;
         } while(i<=4);
         
-        this.leerEmpleado();
 
+        //Recorre los empleados y busca los salarios de los mismos.
+        for(let sueldos of this.empleados) {
+            if(sueldos["sueldo"] >= 100 && sueldos["sueldo"] <=300) contadorSueldosBasicos++;
+            else if(sueldos["sueldo"] > 300) contadorSueldosAltos++;
+
+            console.log(`Nombre: ${sueldos["nombre"]} \nSalario: ${sueldos["sueldo"]}`);
+        }
+
+        console.log(`Hay un total de ${contadorSueldosBasicos} empleados que cobran entre 100 y 300$ y un total de ${contadorSueldosAltos} empleados que cobran 300$ o más`);
     }
-    //Crea un empleado con un nombre especifico
+    //Añade al array de empleados el nombre y el sueldo del mismo
     addEmpleado(nombre, sueldo) {
         this.empleados.push(new Empleados(nombre,sueldo));
     }
-
-    leerEmpleado(){
-        for(let empleados of this.empleados) {
-            console.log(empleados);
-        }
-    }
-
-
-    /*crearEmpleados(num) {
-        for (let i = num; i <= num; i++) {
-            this.empleados.push(new Empleados());
-        }
-    }*/
-
-    leerSueldo() {
-        for(let empleado of this.empleados) {
-            empleado.sueldo = 100;
-        }
-
-    }
-
 }
 
 new App();
